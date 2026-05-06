@@ -9,10 +9,10 @@ This repository contains my submissions for the Backend Track evaluation. Each f
 
 ```
 .
-├── logging_middleware/        # Reusable logging package
-├── vehicle_maintence_scheduler/  # Knapsack-based task optimizer
-├── notification_app_be/       # Priority inbox for notifications
-├── notification_system_design.md # System design writeup (Stages 1-6)
+├── logging_middleware/        
+├── vehicle_maintence_scheduler/  
+├── notification_app_be/       
+├── notification_system_design.md 
 └── .gitignore
 ```
 
