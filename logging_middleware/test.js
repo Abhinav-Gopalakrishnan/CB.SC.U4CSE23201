@@ -1,9 +1,5 @@
 const { Log } = require('./index');
 
-/**
- * Test the logging middleware with various log levels and packages.
- * Each test is independent so a single failure does not stop the suite.
- */
 async function runTests() {
   console.log('=== Logging Middleware Tests ===\n');
   let passed = 0;
@@ -21,7 +17,6 @@ async function runTests() {
     }
   }
 
-  // --- Valid log calls -------------------------------------------------------
 
   await test('Backend INFO log (middleware)', async () => {
     await Log('backend', 'info', 'middleware', 'Logging middleware initialized successfully');
@@ -51,14 +46,13 @@ async function runTests() {
     await Log('backend', 'error', 'repository', 'Query returned null for vehicle ID abc-123');
   });
 
-  // --- Validation tests (should throw locally) -------------------------------
 
   await test('Validation: invalid stack rejects', async () => {
     try {
       await Log('mobile', 'info', 'handler', 'This should fail');
       throw new Error('Should have thrown');
     } catch (e) {
-      if (e.message.includes('Invalid stack')) return; // expected
+      if (e.message.includes('Invalid stack')) return; 
       throw e;
     }
   });
@@ -68,7 +62,7 @@ async function runTests() {
       await Log('backend', 'info', 'component', 'This should fail');
       throw new Error('Should have thrown');
     } catch (e) {
-      if (e.message.includes('Invalid package')) return; // expected
+      if (e.message.includes('Invalid package')) return;
       throw e;
     }
   });
@@ -78,12 +72,11 @@ async function runTests() {
       await Log('backend', 'info', 'handler', '');
       throw new Error('Should have thrown');
     } catch (e) {
-      if (e.message.includes('Message must be')) return; // expected
+      if (e.message.includes('Message must be')) return; 
       throw e;
     }
   });
 
-  // --- Summary ---------------------------------------------------------------
   console.log(`\n=== Results: ${passed} passed, ${failed} failed ===`);
 }
 
