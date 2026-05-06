@@ -1,0 +1,12 @@
+{
+  "name": "notification-app-be",
+  "version": "1.0.0",
+  "description": "Campus Notification Priority Inbox - Stage 6 implementation",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.0"
+  }
+}
