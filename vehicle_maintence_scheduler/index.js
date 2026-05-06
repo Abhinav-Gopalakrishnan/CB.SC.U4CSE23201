@@ -124,17 +124,17 @@ function printDepotResult(depot, result) {
 async function main() {
   console.log('\n--- Vehicle Maintenance Scheduler ---\n');
 
-  console.log('[*] Authenticating...');
+  console.log(' Authenticating...');
   const token = await authenticate();
 
-  console.log('[*] Fetching depots...');
+  console.log(' Fetching depots...');
   const depots = await fetchDepots(token);
 
-  console.log('[*] Fetching vehicle tasks...');
+  console.log(' Fetching vehicle tasks...');
   const vehicles = await fetchVehicles(token);
 
   await Log('backend', 'info', 'service', `Starting knapsack optimisation for ${depots.length} depots with ${vehicles.length} tasks`);
-  console.log('[*] Running knapsack optimisation for each depot...\n');
+  console.log(' Running knapsack optimisation for each depot...\n');
 
   for (const depot of depots) {
     const result = solveKnapsack(vehicles, depot.MechanicHours);
@@ -149,7 +149,7 @@ async function main() {
   }
 
   await Log('backend', 'info', 'service', 'Vehicle maintenance scheduling completed successfully');
-  console.log('[*] Scheduling complete!\n');
+  console.log(' Scheduling complete!\n');
 }
 
 main();
