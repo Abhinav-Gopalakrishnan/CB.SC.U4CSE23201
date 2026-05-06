@@ -1,6 +1,5 @@
 const axios = require('axios');
 
-// --- Configuration -----------------------------------------------------------
 
 const LOG_API_URL = 'http://20.207.122.201/evaluation-service/logs';
 const AUTH_API_URL = 'http://20.207.122.201/evaluation-service/auth';
@@ -13,8 +12,6 @@ const AUTH_CREDENTIALS = {
   clientID: "b02ebda0-e6f5-4064-a1bf-521238a8f501",
   clientSecret: "BMWaTZZKbAgymKYK"
 };
-
-// --- Validation Constants ----------------------------------------------------
 
 const VALID_STACKS = ['backend', 'frontend'];
 
@@ -31,15 +28,10 @@ const FRONTEND_PACKAGES = [
 
 const SHARED_PACKAGES = ['auth', 'config', 'middleware', 'utils'];
 
-// --- Token Management --------------------------------------------------------
 
 let cachedToken = null;
 let tokenExpiresAt = 0;
 
-/**
- * Authenticates with the evaluation service and caches the Bearer token.
- * Automatically refreshes when the token expires.
- */
 async function getToken() {
   const now = Math.floor(Date.now() / 1000);
 
@@ -60,11 +52,6 @@ async function getToken() {
   }
 }
 
-// --- Validation --------------------------------------------------------------
-
-/**
- * Returns the set of valid packages for a given stack.
- */
 function getValidPackages(stack) {
   if (stack === 'backend') {
     return [...BACKEND_PACKAGES, ...SHARED_PACKAGES];
@@ -75,10 +62,6 @@ function getValidPackages(stack) {
   return [];
 }
 
-/**
- * Validates the Log function parameters.
- * Throws an error with a descriptive message if any parameter is invalid.
- */
 function validate(stack, level, pkg, message) {
   if (!VALID_STACKS.includes(stack)) {
     throw new Error(
@@ -103,30 +86,24 @@ function validate(stack, level, pkg, message) {
     throw new Error('Message must be a non-empty string.');
   }
 
-  // API enforces a 48-character maximum on messages
   if (message.length > 48) {
     return message.substring(0, 48);
   }
   return message;
 }
 
-// --- Core Log Function -------------------------------------------------------
 
 /**
- * Sends a structured log entry to the evaluation service.
- *
- * @param {string} stack   - The application stack: "backend" or "frontend"
- * @param {string} level   - Log severity: "debug", "info", "warn", "error", or "fatal"
- * @param {string} pkg     - The package/module originating the log (e.g. "handler", "db", "middleware")
- * @param {string} message - A descriptive log message with relevant context
- * @returns {Promise<{logID: string, message: string}>} The server response
+ * @param {string} stack   
+ * @param {string} level   
+ * @param {string} pkg     
+ * @param {string} message 
+ * @returns {Promise<{logID: string, message: string}>} 
  */
 async function Log(stack, level, pkg, message) {
-  // Validate inputs and truncate message if needed
   const sanitizedMessage = validate(stack, level, pkg, message);
   const finalMessage = sanitizedMessage || message;
 
-  // Obtain a valid token (auto-refreshes if expired)
   const token = await getToken();
 
   const body = {
@@ -158,6 +135,5 @@ async function Log(stack, level, pkg, message) {
   }
 }
 
-// --- Exports -----------------------------------------------------------------
 
 module.exports = { Log };
