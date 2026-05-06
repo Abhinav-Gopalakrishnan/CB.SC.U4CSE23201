@@ -127,7 +127,7 @@ function getTopNPriority(notifications, n) {
 
 function printNotifications(topN, totalCount) {
   console.log(`\n  Showing Top ${topN.length} Priority Notifications (out of ${totalCount} total)`);
-  console.log(`  Priority: Placement (weight 3) > Result (weight 2) > Event (weight 1)`);
+  console.log(`  Priority: Placement > Result > Event `);
   console.log(`  Within same type, more recent notifications rank higher.\n`);
 
   
@@ -148,28 +148,28 @@ async function main() {
 
   console.log('\n--- Campus Notification Priority Inbox ---\n');
 
-  console.log('[*] Authenticating...');
+  console.log('Authenticating...');
   const token = await authenticate();
 
-  console.log('[*] Fetching notifications...');
+  console.log('Fetching notifications...');
   const notifications = await fetchNotifications(token);
 
-  console.log(`[*] Computing top ${TOP_N} priority notifications...\n`);
+  console.log(`Computing top ${TOP_N} priority notifications...\n`);
   const topN = getTopNPriority(notifications, TOP_N);
 
   printNotifications(topN, notifications.length);
 
   await Log('backend', 'info', 'service', `Top ${TOP_N} priority notifs computed`);
 
-  console.log('  -- How new notifications are handled efficiently --');
+  
   console.log('  When a new notification arrives:');
   console.log('    1. Calculate its priority score');
-  console.log('    2. Compare with the min-heap root (lowest in top N)');
-  console.log('    3. If higher, replace root and re-heapify: O(log N)');
-  console.log('    4. If lower, discard: O(1)');
-  console.log('  Total cost per new notification: O(log N)\n');
+  console.log('    2. Compare with the min-heap root ');
+  console.log('    3. If higher, replace root and re-heapify');
+  console.log('    4. If lower, discard');
+  
 
-  console.log('[*] Done!\n');
+  console.log('Done!\n');
 }
 
 main();
