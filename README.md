@@ -54,7 +54,6 @@ Solves a resource allocation problem for a logistics company. Each depot has a f
 - Prints a formatted table per depot showing every selected task, total hours used, and the maximum impact achieved.
 - Integrates the logging middleware to record each step of the process.
 
-**Complexity:** O(n * W) per depot, where n = number of tasks and W = mechanic-hour budget.
 
 **How to run:**
 ```bash
