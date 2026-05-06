@@ -20,10 +20,10 @@ const AUTH_CREDENTIALS = {
 async function authenticate() {
   try {
     const response = await axios.post(`${BASE_URL}/auth`, AUTH_CREDENTIALS);
-    console.log('✅ Authentication successful!\n');
+    console.log('Authentication successful!\n');
     return response.data.access_token;
   } catch (error) {
-    console.error('❌ Authentication failed:', error.response?.data || error.message);
+    console.error('Authentication failed:', error.response?.data || error.message);
     process.exit(1);
   }
 }
@@ -37,10 +37,10 @@ async function fetchDepots(token) {
     const response = await axios.get(`${BASE_URL}/depots`, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    console.log(`✅ Fetched ${response.data.depots.length} depots.\n`);
+    console.log(`Fetched ${response.data.depots.length} depots.\n`);
     return response.data.depots;
   } catch (error) {
-    console.error('❌ Failed to fetch depots:', error.response?.data || error.message);
+    console.error('Failed to fetch depots:', error.response?.data || error.message);
     process.exit(1);
   }
 }
@@ -54,10 +54,10 @@ async function fetchVehicles(token) {
     const response = await axios.get(`${BASE_URL}/vehicles`, {
       headers: { Authorization: `Bearer ${token}` }
     });
-    console.log(`✅ Fetched ${response.data.vehicles.length} vehicle tasks.\n`);
+    console.log(`Fetched ${response.data.vehicles.length} vehicle tasks.\n`);
     return response.data.vehicles;
   } catch (error) {
-    console.error('❌ Failed to fetch vehicles:', error.response?.data || error.message);
+    console.error('Failed to fetch vehicles:', error.response?.data || error.message);
     process.exit(1);
   }
 }
@@ -134,9 +134,9 @@ function printDepotResult(depot, result) {
   printSeparator();
 
   console.log('\n  Selected Tasks:');
-  console.log('  ┌──────────────────────────────────────────┬──────────┬────────┐');
+ /* console.log('  ┌──────────────────────────────────────────┬──────────┬────────┐');
   console.log('  │ TaskID                                   │ Duration │ Impact │');
-  console.log('  ├──────────────────────────────────────────┼──────────┼────────┤');
+  console.log('  ├──────────────────────────────────────────┼──────────┼────────┤');*/
 
   for (const task of result.selectedTasks) {
     const id   = task.TaskID.padEnd(40);
@@ -144,35 +144,35 @@ function printDepotResult(depot, result) {
     const imp  = String(task.Impact).padStart(5);
     console.log(`  │ ${id} │ ${dur}   │ ${imp}  │`);
   }
-
-  console.log('  └──────────────────────────────────────────┴──────────┴────────┘\n');
+/*
+  console.log('  └──────────────────────────────────────────┴──────────┴────────┘\n');*/
 }
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('\n🔧 Vehicle Maintenance Scheduler — 0/1 Knapsack Optimiser\n');
+  console.log('\n Vehicle Maintenance Scheduler — 0/1 Knapsack Optimiser\n');
 
   // Step 1: Authenticate
-  console.log('🔑 Authenticating...');
+  console.log(' Authenticating...');
   const token = await authenticate();
 
   // Step 2: Fetch data from APIs
-  console.log('📡 Fetching depots...');
+  console.log(' Fetching depots...');
   const depots = await fetchDepots(token);
 
-  console.log('📡 Fetching vehicle tasks...');
+  console.log(' Fetching vehicle tasks...');
   const vehicles = await fetchVehicles(token);
 
   // Step 3: For each depot, solve the knapsack and display results
-  console.log('🧮 Running knapsack optimisation for each depot...\n');
+  console.log(' Running knapsack optimisation for each depot...\n');
 
   for (const depot of depots) {
     const result = solveKnapsack(vehicles, depot.MechanicHours);
     printDepotResult(depot, result);
   }
 
-  console.log('✅ Scheduling complete!\n');
+  console.log(' Scheduling complete!\n');
 }
 
 main();
